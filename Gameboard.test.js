@@ -6,4 +6,9 @@ describe("Gameboard", () => {
         GB.placeShip([1, 1], [1, 2], [1, 3]);
         expect(GB.board[1, 1]).not.toBeNull()
     })
+    it("should be able to receive attacks", () => {
+        const GB = new Gameboard;
+        expect(GB.receiveAttack(1, 1)).toBe("miss");
+
+    })
 })
