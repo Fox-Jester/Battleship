@@ -8,7 +8,8 @@ class Gameboard{
     }
 
     constructor(){
-        this.board = this.#createBoard()
+        this.board = this.#createBoard();
+        this.misses = [];
     }
 
     placeShip(...coordinates){
@@ -16,6 +17,15 @@ class Gameboard{
         coordinates.forEach((coordinate) => {
             this.board[coordinate[0]][coordinate[1]] = ship;
         })
+    }
+
+    receiveAttack(x, y){
+        if(this.board[x][y] !== null){
+            return (this.board[x][y].hit());
+        }
+        else{
+            return "miss"
+        }
     }
 }
 
