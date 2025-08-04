@@ -2,8 +2,11 @@ import Ship from "./Ship"
 class Gameboard{
 
     #createBoard(){
-        const arrayRow = new Array(10).fill(null);
-        const board = new Array(10).fill(arrayRow);
+        const board = [];
+        for(let i = 1; i <= 10; i++){
+            const column = new Array(10).fill(null);
+            board.push(column);
+        }
         return board;
     }
 
@@ -17,6 +20,7 @@ class Gameboard{
         coordinates.forEach((coordinate) => {
             this.board[coordinate[0]][coordinate[1]] = ship;
         })
+     
     }
 
     receiveAttack(x, y){
