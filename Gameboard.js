@@ -24,6 +24,7 @@ class Gameboard{
             return (this.board[x][y].hit());
         }
         else{
+            this.misses.push([x, y]);
             return "miss"
         }
     }
