@@ -1,0 +1,24 @@
+import Ship from "./Ship"
+class Gameboard{
+
+    #createBoard(){
+        const arrayRow = new Array(10).fill(null);
+        const board = new Array(10).fill(arrayRow);
+        return board;
+    }
+
+    constructor(){
+        this.board = this.#createBoard()
+    }
+
+    placeShip(...coordinates){
+        const ship = new Ship(coordinates.length)
+        coordinates.forEach((coordinate) => {
+            this.board[coordinate[0]][coordinate[1]] = ship;
+        })
+    }
+}
+
+
+
+export default Gameboard
