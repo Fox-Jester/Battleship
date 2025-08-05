@@ -26,7 +26,7 @@ const renderDom = {
                         column.textContent = coordinateArray[(i - 1)];
                     }
                 }
-                if(i === 0 && x > 0){
+                else if(i === 0 && x > 0){
                     column.classList.add("coordinate");
                     column.textContent = x
                 }
