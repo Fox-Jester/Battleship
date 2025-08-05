@@ -20,6 +20,7 @@ const renderDom = {
 
             for(let i = 0; i <= 10; i++){
                 const column = document.createElement("div");
+                const coordinate = [(x - 1), (i - 1)]
                 if(x === 0){
                     column.classList.add("coordinate");
                     if(i !== 0){
@@ -32,7 +33,7 @@ const renderDom = {
                 }
                 else{
                     column.classList.add("column");
-                    column.dataset.coordinate = [(x - 1), (i - 1)];
+                    column.dataset.coordinate = coordinate;
                 }
                 row.appendChild(column);
             }
