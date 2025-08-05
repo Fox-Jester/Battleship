@@ -5,7 +5,7 @@ const player2Board = document.querySelector("#player2-board")
 
 const renderDom = {
 
-    createBoard(){
+    renderBoard(){
         const rowArray = []
         const coordinateArray = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]
 
@@ -45,13 +45,13 @@ const renderDom = {
         return(rowArray);
     },
     
-    createPlayer1Board(){
-        const rowArray = this.createBoard()
+    renderPlayer1Board(){
+        const rowArray = this.renderBoard()
         rowArray.forEach(row => player1Board.appendChild(row));
     },
 
-    createPlayer2Board(){
-         const rowArray = this.createBoard()
+    renderPlayer2Board(){
+         const rowArray = this.renderBoard()
         rowArray.forEach(row => player2Board.appendChild(row));
     }
 }
