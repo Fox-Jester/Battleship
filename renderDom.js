@@ -9,6 +9,7 @@ const renderDom = {
         const rowArray = []
         const coordinateArray = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]
 
+        //Creates 11 rows, the first one for coordinates.
         for(let i = 0; i <= 10; i++){
             const row = document.createElement("div");
          
@@ -17,7 +18,7 @@ const renderDom = {
             
             const x = i
             
-
+            //Creates 11 columns, the first one for coordinates.
             for(let i = 0; i <= 10; i++){
                 const column = document.createElement("div");
                 const coordinate = [(x - 1), (i - 1)]
