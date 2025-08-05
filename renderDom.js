@@ -5,8 +5,10 @@ const player2Board = document.querySelector("#player2-board")
 
 const renderDom = {
 
-    renderBoard(){
-        const rowArray = []
+    renderBoard(board, playerType){
+        player1Board.innerHTML = "";
+
+        
         const coordinateArray = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]
 
         //Creates 11 rows, the first one for coordinates.
@@ -39,21 +41,12 @@ const renderDom = {
                 row.appendChild(column);
             }
 
-            rowArray.push(row);
+            
         }
 
         return(rowArray);
     },
-    
-    renderPlayer1Board(){
-        const rowArray = this.renderBoard()
-        rowArray.forEach(row => player1Board.appendChild(row));
-    },
-
-    renderPlayer2Board(){
-         const rowArray = this.renderBoard()
-        rowArray.forEach(row => player2Board.appendChild(row));
-    }
+ 
 }
 
 export default renderDom
