@@ -31,7 +31,7 @@ const domManager = {
                     column.textContent = x
                 }
                 column.classList.add("column");
-                column.dataset.coordinate = [x, i];
+                column.dataset.coordinate = [(x - 1), (i - 1)];
                 row.appendChild(column);
             }
 
