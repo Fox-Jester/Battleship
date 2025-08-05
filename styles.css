@@ -25,12 +25,15 @@ header{
     margin: 10px;
 }
 
-.coordinate.column{
+.coordinate{
     background-color: rgb(224, 185, 134);
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 1.1rem;
+     width: 50px;
+    height: 50px;
+    border: 1px solid black;
    
 
 }
