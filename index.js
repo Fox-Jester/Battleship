@@ -1,3 +1,3 @@
 import Player from "./Player.js"
-import domManager from "./domManager.js"
+import renderDom from "./renderDom.js"
 

@@ -3,7 +3,7 @@ const player1Board = document.querySelector("#player1-board")
 
 const player2Board = document.querySelector("#player2-board")
 
-const domManager = {
+const renderDom = {
 
     createBoard(){
         const rowArray = []
@@ -52,4 +52,4 @@ const domManager = {
     }
 }
 
-export default domManager
+export default renderDom
