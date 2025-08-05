@@ -30,8 +30,10 @@ const renderDom = {
                     column.classList.add("coordinate");
                     column.textContent = x
                 }
-                column.classList.add("column");
-                column.dataset.coordinate = [(x - 1), (i - 1)];
+                else{
+                    column.classList.add("column");
+                    column.dataset.coordinate = [(x - 1), (i - 1)];
+                }
                 row.appendChild(column);
             }
 
