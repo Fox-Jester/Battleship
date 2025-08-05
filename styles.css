@@ -25,6 +25,16 @@ header{
     margin: 10px;
 }
 
+.coordinate.column{
+    background-color: rgb(224, 185, 134);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.1rem;
+   
+
+}
+
 .row{
     display: flex;
     
