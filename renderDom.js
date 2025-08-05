@@ -49,4 +49,4 @@ const renderDom = {
  
 }
 
-export default renderDom
+export default renderDom;
