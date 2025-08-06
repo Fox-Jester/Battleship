@@ -3,13 +3,16 @@
 function renderBoard(board, playerNum){
     const playerBoard = document.querySelector(`#player${playerNum}-board`);
     
+    playerBoard.innerHTML = ""
 
-    board.forEach((arr) => {
-
+    board.forEach((arr, index) => {
+        const x = index
         const row = document.createElement("div");
         row.classList.add("row");
-        arr.forEach((cell) =>{
+        arr.forEach((cell, y) =>{
+            
             const column = document.createElement("div");
+            column.dataset.coordinate = [x, y];
 
             if(cell === null){
                 column.classList.add("column");
