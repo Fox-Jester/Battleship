@@ -3,9 +3,10 @@ import Gameboard from "./Gameboard.js"
 
 
 class Player{
-    constructor(type){
+    constructor(type, num){
+
         this.type = type
-        this.gameboard = new Gameboard
+        this.gameboard = new Gameboard(num)
     }
 }
 
