@@ -25,6 +25,10 @@ header{
     margin: 10px;
 }
 
+.coordinate-wrapper{
+    display: flex;
+}
+
 .coordinate{
     background-color: rgb(224, 185, 134);
     display: flex;
