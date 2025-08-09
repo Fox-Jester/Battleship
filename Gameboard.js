@@ -1,63 +1,72 @@
-import Ship from "./Ship.js"
-import boardEvents from "./boardEvents.js";
+
+
 import renderBoard from "./renderBoard.js";
 import game from "./index.js";
 
 class Gameboard{
 
-    #createBoard(){
-        const board = [];
+    #createGrid(){
+        const grid = [];
         for(let i = 1; i <= 10; i++){
             const column = new Array(10).fill(null);
-            board.push(column);
+            grid.push(column);
         }
-        return board;
+        return grid;
     }
 
     constructor(playerNum){
      
         this.playerNum = playerNum
-        this.board = this.#createBoard();
-        this.misses = [];
-        this.ships = []
+        this.grid = this.#createGrid();
+        this.board = document.querySelector(`#player${playerNum}-board`)
+        
+       
     }
 
-    placeShip(...coordinates){
-        const ship = new Ship(coordinates.length)
-        this.ships.push(ship);
-        coordinates.forEach((coordinate) => {
-            this.board[coordinate[0]][coordinate[1]] = ship;
-        })
+    placeShip(coordinate){
+        this.grid[coordinate[0]][coordinate[1]] = "ship";
+      
      
     }
 
+
     receiveAttack([x, y]){
-        if(this.board[x][y] !== null && typeof this.board[x][y] === "object"){
-            this.board[x][y].hit();
-            this.board[x][y] = "hit";
+        if(this.grid[x][y] !== null && typeof this.grid[x][y] === "object"){
+            this.grid[x][y].hit();
+            this.grid[x][y] = "hit";
             this.checkLoss()
         }
         else{
-            this.board[x][y] = "miss"
+            this.grid[x][y] = "miss"
         }
-        this.resetBoard()
+        
     }
+    
+    render(hidden){
+        renderBoard(hidden, this.board, this.grid);
 
-    resetBoard(){
-        renderBoard(this.board, this.playerNum);
-        boardEvents(this)
-    }
+    };
+
+    addEventListeners(){
+   
+    const columns = this.board.querySelectorAll(".column, .ship");
+    columns.forEach(column => column.addEventListener(("click"), () => {
+        const stringData = column.dataset.coordinate
+        const numArray = stringData.split(",").map(string => Number(string));
+        this.receiveAttack(numArray);
+        
+     
+        game.changeTurns()
+        
+    }));
+    };
+
 
     checkLoss(){
-        const unSunkShips = []
-        this.ships.forEach((ship) => {
-            if(!(ship.isSunk())){
-                unSunkShips.push(ship)
-            }
-        })
-        if(unSunkShips.length === 0){
-            game.onLose();
-        }
+        const unSunkShips = this.board.querySelectorAll(".ship");
+
+        return (unSunkShips.length === 0) 
+        
     }
     
 }
