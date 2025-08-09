@@ -1,11 +1,10 @@
 
 
-function renderBoard(board, playerNum){
-    const playerBoard = document.querySelector(`#player${playerNum}-board`);
+function renderBoard(hidden, board,  grid){
     
-    playerBoard.innerHTML = ""
+    board.innerHTML = ""
 
-    board.forEach((arr, index) => {
+    grid.forEach((arr, index) => {
         const x = index
         const row = document.createElement("div");
         row.classList.add("row");
@@ -23,13 +22,16 @@ function renderBoard(board, playerNum){
             else if(cell === "hit"){
                 column.classList.add("hit");
             }
-            else{
+            else if(!(hidden)){
                 column.classList.add("ship");
+            }
+            else{
+                column.classList.add("column");
             }
 
             row.appendChild(column);
         });
-    playerBoard.appendChild(row);
+    board.appendChild(row);
     })
     };
  
