@@ -65,7 +65,9 @@ class Gameboard{
     checkLoss(){
         const unSunkShips = this.board.querySelectorAll(".ship");
 
-        return (unSunkShips.length === 0) 
+        if(unSunkShips.length === 0){
+            game.onLoss()
+        } 
         
     }
     
