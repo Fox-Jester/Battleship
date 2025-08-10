@@ -41,6 +41,15 @@ class Gameboard{
         }
         
     }
+
+    highlight(columnArray, isValid){
+        const prevHighlighted = document.querySelectorAll(".valid, .invalid");
+        prevHighlighted.forEach(highlight => highlight.classList.remove("valid", "invalid"))
+
+      columnArray.forEach((column) => {
+        column.classList.add((isValid ? "valid" : "invalid"));
+      })
+    };
     
     render(hidden){
         renderBoard(hidden, this.board, this.grid);
