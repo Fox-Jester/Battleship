@@ -39,7 +39,7 @@ class Player{
             let targetCoordinate = null
             
             if(axisLead){
-                targetCoordinate =trackAxis();
+                targetCoordinate = trackAxis();
             }
             else{
                 targetCoordinate = trackLead();
@@ -57,90 +57,77 @@ class Player{
             
             const justHit = attackedColumn.classList.contains("hit");
 
-            let targetCoordinate
+            let targetCoordinate;
             
             function checkMiss(){
                 const targetColumn = getColumn(targetCoordinate);
-                return (targetColumn.classList.contains("column"))
+                return (targetColumn.classList.contains("column"));
+            };
+
+            const isX = axisLead === "x"
+    
+            //forward and backward directions for x or y
+            const directions = isX
+            ? [[0, 1], [0, -1]]
+            : [[1,0], [-1, 0]];
+
+            function isOpen([y, x]){
+                return(
+                    isNewAttack([y, x]) && 
+                    y < 10 && y > -1 &&
+                    x < 10 && x > -1
+                );
             }
-            
+
+            const [forwardOffset, backwardOffset] = directions;
         
-            if(axisLead === "x"){
-                const rightSpotOpen = isNewAttack([lastAttack[0], (lastAttack[1] + 1)]) && (lastAttack[1] + 1) < 10;
-                const leftSpotOpen = isNewAttack([lastAttack[0], (lastAttack[1] - 1)]) && (lastAttack[1] - 1) > -1;
+            const forwardFromLast = [forwardOffset[0] + lastAttack[0], forwardOffset[1] + lastAttack[1]];
+            const backwardFromLast = [backwardOffset[0] + lastAttack[0], backwardOffset[1] + lastAttack[1]];
 
-                const leadRightOpen = isNewAttack([lead[0], (lead[1] + 1)]) && (lead[1] + 1) < 10
-                const leadLeftOpen = isNewAttack([lead[0], (lead[1] - 1)]) && (lead[1] - 1) > -1
+            const nextFromForward = [(forwardOffset[0] * 2) + lastAttack[0], (forwardOffset[1] * 2) + lastAttack[1]];
+            const nextFromBackward = [(backwardOffset[0] * 2) + lastAttack[0], (backwardOffset[1] * 2) + lastAttack[1]];
+
+            const forwardFromLead = [forwardOffset[0] + lead[0], forwardOffset[1] + lead[1]];
+            const backwardFromLead = [backwardOffset[0] + lead[0], backwardOffset[1] + lead[1]];
+
+            const forwardSpotOpen= isOpen(forwardFromLast);
+            const backwardSpotOpen = isOpen(backwardFromLast);
+
+            const nextForwardOpen = isOpen(nextFromForward)
+            const nextBackwardOpen = isOpen(nextFromBackward)
+
+            const forwardLeadOpen = isOpen(forwardFromLead);
+            const backwardLeadOpen = isOpen(backwardFromLead);
+            
+            if(justHit && forwardSpotOpen){
+                targetCoordinate = forwardFromLast;
                 
-                if(justHit && rightSpotOpen){
-                    targetCoordinate = [lastAttack[0],(lastAttack[1] + 1)];
+                if(checkMiss() && !(backwardLeadOpen) || !nextForwardOpen && !backwardLeadOpen){
+                    clearLeads();
                     
-                    if(checkMiss() && !(leadLeftOpen)){
-                        clearLeads()
-                    }
-                }
-                else if(justHit && leftSpotOpen){
-                    targetCoordinate = [lastAttack[0],(lastAttack[1] - 1)];
-
-                    if(checkMiss() && !(leadRightOpen)){
-                        clearLeads()
-                    }
-                }
-                else if(leadRightOpen){
-                    targetCoordinate = [lead[0],(lead[1] + 1)];
-
-                    if(checkMiss()){
-                         clearLeads()
-                    };
-                    
-                }
-                else if(leadLeftOpen){
-                    targetCoordinate = [lead[0],(lead[1] - 1)];
-
-                    if(checkMiss()){
-                         clearLeads()
-                    };
-                } 
+                };
             }
-
-            else if(axisLead === "y"){
-                const topSpotOpen = isNewAttack([(lastAttack[0] + 1), lastAttack[1]]) && (lastAttack[0] + 1) < 10;
-                const bottomSpotOpen = isNewAttack([(lastAttack[0] - 1), lastAttack[1]]) && (lastAttack[0] - 1) > -1;
-
-                const leadTopOpen = isNewAttack([(lead[0] + 1), lead[1]]) && (lead[0] + 1) < 10
-                const leadBottomOpen = isNewAttack([(lead[0] - 1), lead[1]]) && (lead[0] - 1) > -1
+            else if(justHit && backwardSpotOpen){
+                targetCoordinate = backwardFromLast;
+                if(checkMiss() && !(forwardLeadOpen) || !nextBackwardOpen && !forwardLeadOpen){
+                    clearLeads();
+                };
+            }
+            else if(forwardLeadOpen){
+                targetCoordinate = forwardFromLead;
+                if(checkMiss()){
+                     clearLeads();
+                };
                 
-                if(justHit && topSpotOpen){
-                    targetCoordinate = [(lastAttack[0] + 1),lastAttack[1]];
-                    
-                    if(checkMiss() && !(leadBottomOpen)){
-                        clearLeads()
-                    }
-                }
-                else if(justHit && bottomSpotOpen){
-                    targetCoordinate = [(lastAttack[0] - 1),lastAttack[1]];
-
-                    if(checkMiss() && !(leadTopOpen)){
-                        clearLeads()
-                    }
-                }
-                else if(leadTopOpen){
-                    targetCoordinate = [(lead[0] + 1),lead[1]];
-
-                    if(checkMiss()){
-                         clearLeads()
-                    };
-                    
-                }
-                else if(leadBottomOpen){
-                    targetCoordinate = [(lead[0] - 1),lead[1]];
-
-                    if(checkMiss()){
-                         clearLeads()
-                    };
-                } 
-
             }
+            else if(backwardLeadOpen){
+                targetCoordinate = backwardFromLead;
+                if(checkMiss()){
+                         clearLeads();
+                };
+                } 
+            
+            
             return targetCoordinate;
         }
         
@@ -151,11 +138,12 @@ class Player{
             
             const attackedColumn = getColumn(targetCoordinate);
           
-                
-            if(attackedColumn.classList.contains("ship")){
-                axisLead = targetAxis
-            }
             
+            if(attackedColumn.classList.contains("ship")){
+                axisLead = targetAxis;
+                
+        
+            }
             return targetCoordinate
    
         }
@@ -191,7 +179,7 @@ class Player{
                 targetAxis = "y";
                 
             };
-           
+            
             return [targetCoordinate, targetAxis]
         };
         
@@ -207,6 +195,13 @@ class Player{
             while(!(isNewAttack(randomCoordinate))){
                 randomCoordinate = [random(), random()];
             }
+            const attackedColumn = getColumn(randomCoordinate);
+            
+            if(attackedColumn.classList.contains("ship") && lead.length === 0){
+                lead.push(...randomCoordinate);
+            
+             
+            };
             return randomCoordinate;
         };
 
@@ -231,14 +226,9 @@ class Player{
                 game.currentTarget.gameboard.receiveAttack(coordinate);
                 attacks.push(coordinate);
                 
-                const attackedColumn = getColumn(coordinate);
-            
-                if(attackedColumn.classList.contains("ship") && lead.length === 0){
-                    lead.push(...coordinate);
-             
-                };
+              
                 
-                game.changeTurns()
+                game.changeTurns();
             }
         }
     })();
