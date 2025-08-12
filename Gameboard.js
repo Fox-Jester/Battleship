@@ -31,8 +31,7 @@ class Gameboard{
 
 
     receiveAttack([x, y]){
-        if(this.grid[x][y] !== null && typeof this.grid[x][y] === "object"){
-            this.grid[x][y].hit();
+        if(this.grid[x][y] === "ship"){
             this.grid[x][y] = "hit";
             this.checkLoss()
         }
@@ -70,11 +69,19 @@ class Gameboard{
     }));
     };
 
-
     checkLoss(){
-        const unSunkShips = this.board.querySelectorAll(".ship");
+        const ships = []
 
-        if(unSunkShips.length === 0){
+        this.grid.forEach((row) => {
+            row.forEach((cell) => {
+                if(cell === "ship"){
+                    ships.push(cell)
+                }
+            })
+        })
+        
+
+        if(ships.length === 0){
             game.onLoss()
         } 
         
