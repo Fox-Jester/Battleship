@@ -179,9 +179,18 @@ startPhase: (() => {
 
                         game.player1.gameboard.placeShip(coordinate);
                     })
-                    ship.remove()
+
+                    ship.remove();
+
                     game.player1.gameboard.render();
-                    dropEvents() 
+
+                    //Checks for more placeable ships
+                    shipyard.children.length === 0
+                    ? game.enterBattlePhase()
+                    : dropEvents();
+
+                    
+                    
                 }
                 else{
                     alert("invalid placement")
@@ -206,7 +215,10 @@ startPhase: (() => {
 
 enterStartPhase(){
     this.player1.gameboard.render();
-    this.player2.gameboard.render();
+    if(this.player2.type === "ai"){
+        this.player2.ai.placeShips()
+    }
+    this.player2.gameboard.render(true);
     this.startPhase.start()
 },
 
@@ -223,24 +235,24 @@ enterBattlePhase(){
     },
 
     changeTurns(){
+        //swap the current player and current target
         
         this.currentTarget === this.player2 
         ? this.currentTarget.gameboard.render(true)
         : this.currentTarget.gameboard.render()
+        
+        const prevPlayer = this.currentPlayer;
+        this.currentPlayer = this.currentTarget;
+        this.currentTarget = prevPlayer;
+       
+        
 
-        if(this.currentPlayer === this.player1){
-            this.currentPlayer = this.player2;
-            this.currentTarget = this.player1;
-            
+        if(this.currentPlayer === this.player2 && this.player2.type === "ai"){
+            this.player2.ai.play()
         }
         else{
-            this.currentPlayer = this.player1;
-            this.currentTarget = this.player2
-           
+            this.currentTarget.gameboard.addEventListeners()
         }
-        this.currentTarget.gameboard.addEventListeners()
-
-
 
         
     },
