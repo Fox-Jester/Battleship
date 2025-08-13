@@ -4,8 +4,8 @@ import game from "./index.js"
  //Handles ai controls
     class ai {
 
-        constructor(){
-
+        constructor(player){
+            this.player = player 
         }
         
         //Attacks made
@@ -198,16 +198,21 @@ import game from "./index.js"
         };
         
         
+        #randomBoardIndex(){
+            const maxCoordinate = this.#overIndex - 1
+            return Math.floor(Math.random() * (maxCoordinate + 1))
+        }
+
+        #randomAxis(){
+            const randomNum = Math.floor(Math.random() * 2);
+            return (randomNum === 0 ? "x" : "y"); 
+        }
         
         #getRandomCoordinate(){ 
-            const random = () => {
-                const maxCoordinate = this.#overIndex - 1
-                return Math.floor(Math.random() * (maxCoordinate + 1))
-            }
             
-            let randomCoordinate = [random(), random()]
+            let randomCoordinate = [this.#randomBoardIndex(), this.#randomBoardIndex()]
             while(!(this.#isNewAttack(randomCoordinate))){
-                randomCoordinate = [random(), random()];
+                randomCoordinate = [this.#randomBoardIndex(), this.#randomBoardIndex()];
             }
             const attackedColumn = this.#getColumn(randomCoordinate);
             
@@ -244,6 +249,75 @@ import game from "./index.js"
                 
                 game.changeTurns();
             };
+
+        #gridCoordOpen([y, x]){
+            return this.player.gameboard.grid[x][y] === null;
+        }
+
+        #randomShipPosition(length, axis){
+
+            let shipCoords = [];
+            
+            while(shipCoords.length === 0){
+                
+                let randomCoord = [this.#randomBoardIndex(), this.#randomBoardIndex()];
+                while(!this.#gridCoordOpen(randomCoord)){
+                    randomCoord = [this.#randomBoardIndex(), this.#randomBoardIndex()];
+                }
+    
+                for(let i = 0; i < length; i++){
+                    if(axis === "x"){
+                        if(randomCoord[1] + length > this.#overIndex){
+                            shipCoords.push([randomCoord[0], randomCoord[1] - i]);
+                        }
+                        else shipCoords.push([randomCoord[0], randomCoord[1] + i]);
+                    }
+                    else{
+                        if(randomCoord[0] + length > this.#overIndex){
+                            shipCoords.push([randomCoord[0] - i, randomCoord[1]]);
+                        }
+                        else shipCoords.push([randomCoord[0] + i, randomCoord[1]]);
+                    }
+    
+                }
+    
+                shipCoords.forEach((coord) => {
+                    if(!this.#gridCoordOpen(coord)){
+                        shipCoords.length = 0
+                    }
+                    });
+
+            };
+
+            return shipCoords;
+
+            
+        };
+
+        #addShipToBoard(ship){
+
+            const length = ship.length;
+
+            const axis = this.#randomAxis();
+
+            const shipCoords = this.#randomShipPosition(length, axis);
+
+            shipCoords.forEach((coord) => {
+                this.player.gameboard.grid[coord[1]][coord[0]] = "ship"
+            })
+        }
+
+        placeShips(){
+            const carrier = {length: 5};
+            const battleship = {length: 4};
+            const destroyer = {length: 3};
+            const submarine = {length: 3};
+            const patrolboat = {length: 2};
+
+            const ships = [carrier, battleship, destroyer, submarine, patrolboat];
+
+            ships.forEach(ship => this.#addShipToBoard(ship));
+        }
 
           
         };
