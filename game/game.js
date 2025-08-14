@@ -2,6 +2,7 @@
 import Player from "../Player/Player.js"
 import shipPlacementController from "./shipPlacementController.js";
 import infoDisplay from "./infoText.js";
+import coinFlip from "../helper-functions/coinFlip.js";
 
 
 const game = {
@@ -26,7 +27,14 @@ const game = {
     shipPlacementController.shipyardEvents();
 },
 
-
+addAttackListener(){
+    if(this.currentPlayer === this.player2 && this.player2.type === "ai"){
+            this.player2.ai.play()
+        }
+    else{
+            this.currentTarget.gameboard.addEventListeners()
+        }
+},
 
 enterStartPhase(){
     this.player1.gameboard.resetGrid();
@@ -37,8 +45,11 @@ enterStartPhase(){
 
     if(this.player2.type === "ai"){
         this.player2.ai.placeShips()
-    }
+    };
+
     this.player2.gameboard.render(true);
+
+    infoDisplay.setText("Place ships");
     shipPlacementController.shipEvents();
 },
 
@@ -46,12 +57,18 @@ enterStartPhase(){
 
 enterBattlePhase(){
     
+    const randomNum = coinFlip();
+    if(randomNum === 0){
+        this.currentPlayer = this.player1;
+        this.currentTarget = this.player2;
+    }
+    else{
+        this.currentPlayer = this.player2;
+        this.currentTarget = this.player1;
+    };
 
-    
-    this.currentPlayer = this.player1
-    this.currentTarget = this.player2
-    
-    this.currentTarget.gameboard.addEventListeners()
+    infoDisplay.setText(`Turn: Player${this.currentPlayer.num}`);
+    this.addAttackListener();
     },
 
     changeTurns(){
@@ -60,7 +77,7 @@ enterBattlePhase(){
         this.player1.gameboard.render()
 
         
-        this.currentTarget.gameboard.checkLoss();
+        this.currentTarget.gameboard.checkGameOver();
 
         if(!this.winner){
             //swap the current player and current target
@@ -68,14 +85,8 @@ enterBattlePhase(){
             this.currentPlayer = this.currentTarget;
             this.currentTarget = prevPlayer;
            
-            
-    
-            if(this.currentPlayer === this.player2 && this.player2.type === "ai"){
-                this.player2.ai.play()
-            }
-            else{
-                this.currentTarget.gameboard.addEventListeners()
-            }
+        infoDisplay.setText(`Turn: Player${this.currentPlayer.num}`);
+        this.addAttackListener()
 
         }
 
@@ -87,7 +98,7 @@ enterBattlePhase(){
       
     },
 
-    onLoss(){
+    onGameOver(){
         this.winner = this.currentPlayer;
         infoDisplay.setText(`Winner: Player${this.winner.num}`);
         infoDisplay.createResetBtn();
@@ -96,7 +107,6 @@ enterBattlePhase(){
 
     //Resets the boards, ships, and startphase
     reset(){
-        alert("Wah");
         this.winner = "";
 
         if(this.player2.ai){

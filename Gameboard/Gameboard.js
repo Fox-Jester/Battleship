@@ -71,7 +71,7 @@ class Gameboard{
         this.grid = this.#createGrid()
     };
 
-    checkLoss(){
+    checkGameOver(){
         
         const ships = []
 
@@ -85,7 +85,7 @@ class Gameboard{
         
 
         if(ships.length === 0){
-            game.onLoss()
+            game.onGameOver()
         } 
         
     }
