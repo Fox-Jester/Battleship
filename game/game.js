@@ -23,7 +23,7 @@ const game = {
     this.player2 = new Player("ai", 2);
 
     this.enterStartPhase()
-
+    shipPlacementController.shipyardEvents();
 },
 
 
@@ -39,7 +39,7 @@ enterStartPhase(){
         this.player2.ai.placeShips()
     }
     this.player2.gameboard.render(true);
-    startPhase.start()
+    shipPlacementController.shipEvents();
 },
 
 
@@ -92,8 +92,6 @@ enterBattlePhase(){
         infoDisplay.setText(`Winner: Player${this.winner.num}`);
         infoDisplay.createResetBtn();
         
-        alert(`Player${this.winner.num}`);
-        this.reset()
     },
 
     //Resets the boards, ships, and startphase

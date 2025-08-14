@@ -1,35 +1,14 @@
 import game from "./game.js";
 
 
-const startPhase = (() => {     
+const shipPlacementController = (() => {     
     let horizontalMode = true;
 
     let currentDragId = ''
     
     const shipyard = document.querySelector("#shipyard");
 
-    function shipyardEvents(){
-        const shipyardContainer = shipyard.parentElement
-        shipyardContainer.addEventListener("click", () => {
-            horizontalMode = !(horizontalMode);
-
-            const ships = shipyard.querySelectorAll(".row");
-
-            if(!horizontalMode){
-                ships.forEach(ship => ship.classList.add("rotate"));
-            }
-            else{
-                ships.forEach(ship => ship.classList.remove("rotate"));
-            }
-        });
-
-        //Removes all highlights when dragged back over shipyard
-        shipyardContainer.addEventListener("dragover", () => {
-            const highlighted = document.querySelectorAll(".valid, .invalid");
-            highlighted.forEach(highlight => highlight.classList.remove("valid", "invalid"))
-        })
-    }
-
+    const shipyardContainer = shipyard.parentElement
 
     
     function dragEvents(){
@@ -184,13 +163,35 @@ const startPhase = (() => {
 
 
     return{
-        start(){
+        shipEvents(){
+            horizontalMode = true;
             dragEvents();
             dropEvents();
-            shipyardEvents();
-        
+            
         },
+
+        shipyardEvents(){
+        
+        shipyardContainer.addEventListener("click", () => {
+            horizontalMode = !(horizontalMode);
+
+            const ships = shipyard.querySelectorAll(".row");
+
+            !horizontalMode 
+            ? ships.forEach(ship => ship.classList.add("rotate"))
+            : ships.forEach(ship => ship.classList.remove("rotate"));
+            
+           
+        });
+
+        //Removes all highlights when dragged back over shipyard
+        shipyardContainer.addEventListener("dragover", () => {
+            const highlighted = document.querySelectorAll(".valid, .invalid");
+            highlighted.forEach(highlight => highlight.classList.remove("valid", "invalid"))
+        })
+        }
+
     }
 })();
 
-export default startPhase;
+export default shipPlacementController;
