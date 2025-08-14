@@ -1,5 +1,6 @@
 import Gameboard from "./Gameboard.js"
 import ai from "./ai.js"
+import setShips from "./setShips.js"
 
 
 class Player{
@@ -11,10 +12,14 @@ class Player{
         if(type === "ai"){
             this.ai = new ai(this);
         }
+        else{
+            this.setShips = setShips;
+            }
+        }
     }
     
     
    
-}
+
 
 export default Player
