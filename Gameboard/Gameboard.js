@@ -1,7 +1,7 @@
 
 
 import renderBoard from "./renderBoard.js";
-import game from "./main.js";
+import game from "../game/game.js";
 
 class Gameboard{
 

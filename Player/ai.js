@@ -1,5 +1,5 @@
 
-import game from "./main.js"
+import game from "../game/game.js";
 
  //Handles ai controls
     class ai {

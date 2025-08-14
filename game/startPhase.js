@@ -1,4 +1,4 @@
-import game from "./main.js";
+import game from "./game.js";
 
 
 const startPhase = (() => {     

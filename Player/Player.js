@@ -1,4 +1,4 @@
-import Gameboard from "./Gameboard.js"
+import Gameboard from "../Gameboard/Gameboard.js"
 import ai from "./ai.js"
 import setShips from "./setShips.js"
 
