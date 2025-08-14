@@ -149,13 +149,18 @@ import game from "./index.js"
         #trackLead(){
             const [targetCoordinate, targetAxis] = this.#checkAxis();
 
-            
-            const attackedColumn = this.#getColumn(targetCoordinate);
-          
-            
-            if(attackedColumn.classList.contains("ship")){
-                this.#axisLead = targetAxis;
+
+            if(targetCoordinate){
+                const attackedColumn = this.#getColumn(targetCoordinate);
+
+                if(attackedColumn.classList.contains("ship")){
+                    this.#axisLead = targetAxis;
+                }
             }
+            else{
+                this.#clearLeads();
+            }
+            
             return targetCoordinate
    
         }
