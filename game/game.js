@@ -1,6 +1,8 @@
 
 import Player from "../Player/Player.js"
-import startPhase from "./startPhase.js";
+import shipPlacementController from "./shipPlacementController.js";
+import infoDisplay from "./infoText.js";
+
 
 const game = {
 
@@ -87,6 +89,8 @@ enterBattlePhase(){
 
     onLoss(){
         this.winner = this.currentPlayer;
+        infoDisplay.setText(`Winner: Player${this.winner.num}`);
+        infoDisplay.createResetBtn();
         
         alert(`Player${this.winner.num}`);
         this.reset()

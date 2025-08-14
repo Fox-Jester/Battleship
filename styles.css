@@ -14,11 +14,33 @@ header{
 
 #info-container{
     display: flex;
-    gap: 5px;
+    
+    gap: 15px;
     color: white;
     text-shadow: 1px 1px 2px black;
     font-size: 1.1rem;
+    padding: 15px 0;
 }
+
+#info-container h2{
+    margin: 0;
+}
+
+.reset-btn{
+    font-size: 1.1rem;
+    padding: 8px 12px;
+    background-color: rgb(8, 169, 255);
+    color: white;
+    text-shadow: 2px 2px 2px hsl(0, 0%, 15%);
+    border-width: 2px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.reset-btn:hover{
+    background-color: rgb(4, 131, 199);
+}
+
+
 
 #game-container{
     display: flex;
