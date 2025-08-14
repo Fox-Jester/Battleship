@@ -235,11 +235,12 @@ enterBattlePhase(){
     },
 
     changeTurns(){
-        //swap the current player and current target
+    
+        this.player2.gameboard.render(true);
+        this.player1.gameboard.render()
+
         
-        this.currentTarget === this.player2 
-        ? this.currentTarget.gameboard.render(true)
-        : this.currentTarget.gameboard.render()
+        this.currentTarget.gameboard.checkLoss();
         
         const prevPlayer = this.currentPlayer;
         this.currentPlayer = this.currentTarget;

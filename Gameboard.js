@@ -33,7 +33,6 @@ class Gameboard{
     receiveAttack([x, y]){
         if(this.grid[x][y] === "ship"){
             this.grid[x][y] = "hit";
-            this.checkLoss()
         }
         else{
             this.grid[x][y] = "miss"
