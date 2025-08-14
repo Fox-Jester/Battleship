@@ -87,7 +87,7 @@ enterBattlePhase(){
 
     onLoss(){
         this.winner = this.currentPlayer;
-        console.log(this.winner)
+        
         alert(`Player${this.winner.num}`);
         this.reset()
     },
