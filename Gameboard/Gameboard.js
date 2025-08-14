@@ -1,7 +1,7 @@
 
 
 import renderBoard from "./renderBoard.js";
-import game from "./index.js";
+import game from "../game/game.js";
 
 class Gameboard{
 
@@ -31,33 +31,30 @@ class Gameboard{
 
 
     receiveAttack([x, y]){
-        if(this.grid[x][y] !== null && typeof this.grid[x][y] === "object"){
-            this.grid[x][y].hit();
+        if(this.grid[x][y] === "ship"){
             this.grid[x][y] = "hit";
-            this.checkLoss()
         }
         else{
             this.grid[x][y] = "miss"
         }
         
     }
-
+    
     highlight(columnArray, isValid){
         const prevHighlighted = document.querySelectorAll(".valid, .invalid");
         prevHighlighted.forEach(highlight => highlight.classList.remove("valid", "invalid"))
-
-      columnArray.forEach((column) => {
-        column.classList.add((isValid ? "valid" : "invalid"));
-      })
+        
+        columnArray.forEach((column) => {
+            column.classList.add((isValid ? "valid" : "invalid"));
+        })
     };
     
     render(hidden){
         renderBoard(hidden, this.board, this.grid);
-
     };
-
+    
     addEventListeners(){
-   
+        
     const columns = this.board.querySelectorAll(".column, .ship");
     columns.forEach(column => column.addEventListener(("click"), () => {
         const stringData = column.dataset.coordinate
@@ -70,12 +67,25 @@ class Gameboard{
     }));
     };
 
+    resetGrid(){
+        this.grid = this.#createGrid()
+    };
 
-    checkLoss(){
-        const unSunkShips = this.board.querySelectorAll(".ship");
+    checkGameOver(){
+        
+        const ships = []
 
-        if(unSunkShips.length === 0){
-            game.onLoss()
+        this.grid.forEach((row) => {
+            row.forEach((cell) => {
+                if(cell === "ship"){
+                    ships.push(cell)
+                }
+            })
+        })
+        
+
+        if(ships.length === 0){
+            game.onGameOver()
         } 
         
     }

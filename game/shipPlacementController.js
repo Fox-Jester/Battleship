@@ -1,56 +1,14 @@
-import Player from "./Player.js"
+import game from "./game.js";
 
 
-
-const game = {
-
-    
-    
-    
-    player1: "",
-    player2: "",
-    
-    currentPlayer: "",
-    currentTarget: "",
-
-
-    init(){
-    this.player1 = new Player("human", 1);
-    this.player2 = new Player("ai", 2);
-
-    this.enterStartPhase()
-
-},
-
-startPhase: (() => {     
+const shipPlacementController = (() => {     
     let horizontalMode = true;
 
     let currentDragId = ''
     
     const shipyard = document.querySelector("#shipyard");
 
-    function shipyardEvents(){
-        const shipyardContainer = shipyard.parentElement
-        shipyardContainer.addEventListener("click", () => {
-            horizontalMode = !(horizontalMode);
-
-            const ships = shipyard.querySelectorAll(".row");
-
-            if(!horizontalMode){
-                ships.forEach(ship => ship.classList.add("rotate"));
-            }
-            else{
-                ships.forEach(ship => ship.classList.remove("rotate"));
-            }
-        });
-
-        //Removes all highlights when dragged back over shipyard
-        shipyardContainer.addEventListener("dragover", () => {
-            const highlighted = document.querySelectorAll(".valid, .invalid");
-            highlighted.forEach(highlight => highlight.classList.remove("valid", "invalid"))
-        })
-    }
-
+    const shipyardContainer = shipyard.parentElement
 
     
     function dragEvents(){
@@ -179,9 +137,18 @@ startPhase: (() => {
 
                         game.player1.gameboard.placeShip(coordinate);
                     })
-                    ship.remove()
+
+                    ship.remove();
+
                     game.player1.gameboard.render();
-                    dropEvents() 
+
+                    //Checks for more placeable ships
+                    shipyard.children.length === 0
+                    ? game.enterBattlePhase()
+                    : dropEvents();
+
+                    
+                    
                 }
                 else{
                     alert("invalid placement")
@@ -194,65 +161,37 @@ startPhase: (() => {
             
     };
 
+
     return{
-        start(){
+        shipEvents(){
+            horizontalMode = true;
             dragEvents();
             dropEvents();
-            shipyardEvents();
-        
-        },
-    }
-})(),
-
-enterStartPhase(){
-    this.player1.gameboard.render();
-    this.player2.gameboard.render();
-    this.startPhase.start()
-},
-
-
-
-enterBattlePhase(){
-    
-
-    
-    this.currentPlayer = this.player1
-    this.currentTarget = this.player2
-    
-    this.currentTarget.gameboard.addEventListeners()
-    },
-
-    changeTurns(){
-        
-        this.currentTarget === this.player2 
-        ? this.currentTarget.gameboard.render(true)
-        : this.currentTarget.gameboard.render()
-
-        if(this.currentPlayer === this.player1){
-            this.currentPlayer = this.player2;
-            this.currentTarget = this.player1;
             
-        }
-        else{
-            this.currentPlayer = this.player1;
-            this.currentTarget = this.player2
-           
-        }
-        this.currentTarget.gameboard.addEventListeners()
+        },
 
-
-
+        shipyardEvents(){
         
-    },
+        shipyardContainer.addEventListener("click", () => {
+            horizontalMode = !(horizontalMode);
 
-    onLoss(){
-        console.log("oof")
+            const ships = shipyard.querySelectorAll(".row");
+
+            !horizontalMode 
+            ? ships.forEach(ship => ship.classList.add("rotate"))
+            : ships.forEach(ship => ship.classList.remove("rotate"));
+            
+           
+        });
+
+        //Removes all highlights when dragged back over shipyard
+        shipyardContainer.addEventListener("dragover", () => {
+            const highlighted = document.querySelectorAll(".valid, .invalid");
+            highlighted.forEach(highlight => highlight.classList.remove("valid", "invalid"))
+        })
+        }
+
     }
+})();
 
-
-
-}
-
-game.init()
-
-export default game
+export default shipPlacementController;
