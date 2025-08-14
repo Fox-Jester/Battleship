@@ -1,5 +1,6 @@
 
 import game from "../game/game.js";
+import coinFlip from "../helper-functions/coinFlip.js";
 
  //Handles ai controls
     class ai {
@@ -208,10 +209,6 @@ import game from "../game/game.js";
             return Math.floor(Math.random() * (maxCoordinate + 1))
         }
 
-        #randomAxis(){
-            const randomNum = Math.floor(Math.random() * 2);
-            return (randomNum === 0 ? "x" : "y"); 
-        }
         
         #getRandomCoordinate(){ 
             
@@ -303,7 +300,7 @@ import game from "../game/game.js";
 
             const length = ship.length;
 
-            const axis = this.#randomAxis();
+            const axis = (coinFlip() === 0 ? "x" : "y");
 
             const shipCoords = this.#randomShipPosition(length, axis);
 
