@@ -96,8 +96,13 @@ enterBattlePhase(){
 
     //Resets the boards, ships, and startphase
     reset(){
-        this.player2.gameboard.render();
-        this.player1.gameboard.render()
+        alert("Wah");
+        this.winner = "";
+
+        if(this.player2.ai){
+            this.player2.ai.reset();
+        }
+        this.enterStartPhase();
     }
 
 

@@ -324,6 +324,11 @@ import game from "../game/game.js";
             ships.forEach(ship => this.#addShipToBoard(ship));
         }
 
+        reset(){
+            this.#clearLeads();
+            this.#attacks = []
+        }
+
           
         };
     
