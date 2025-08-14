@@ -39,23 +39,22 @@ class Gameboard{
         }
         
     }
-
+    
     highlight(columnArray, isValid){
         const prevHighlighted = document.querySelectorAll(".valid, .invalid");
         prevHighlighted.forEach(highlight => highlight.classList.remove("valid", "invalid"))
-
-      columnArray.forEach((column) => {
-        column.classList.add((isValid ? "valid" : "invalid"));
-      })
+        
+        columnArray.forEach((column) => {
+            column.classList.add((isValid ? "valid" : "invalid"));
+        })
     };
     
     render(hidden){
         renderBoard(hidden, this.board, this.grid);
-
     };
-
+    
     addEventListeners(){
-   
+        
     const columns = this.board.querySelectorAll(".column, .ship");
     columns.forEach(column => column.addEventListener(("click"), () => {
         const stringData = column.dataset.coordinate
@@ -68,7 +67,12 @@ class Gameboard{
     }));
     };
 
+    resetGrid(){
+        this.grid = this.#createGrid()
+    };
+
     checkLoss(){
+        
         const ships = []
 
         this.grid.forEach((row) => {
